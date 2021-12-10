@@ -1,24 +1,50 @@
-import logo from './logo.svg';
 import './App.css';
+import data from './data/players.json'
+import React, { useState, useEffect } from 'react'
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  useHistory,
+} from 'react-router-dom'
+import Nav from './components/Nav';
+import Playerlist from './pages/PlayerList';
+import PlayerDetail from './pages/PlayerDetail';
 
 function App() {
+  const [ playerInfo, setPlayerInfo] = useState([])
+  const [player, setPlayer] = useState('')
+
+  useEffect(() => {
+    const newPlayerInfo = data.filter(function(el){
+        return el.name === player
+    })
+    setPlayerInfo(newPlayerInfo)
+    
+  }, [player]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Nav></Nav>
+        {/* <Playerlist
+          data={data}
+        /> */}
+      <Switch>
+        <Route path="/detail">
+          <PlayerDetail
+          playerInfo={playerInfo}
+          />
+        </Route>
+
+        <Route path="/">
+          <Playerlist 
+            data={data}
+            setPlayer={setPlayer}
+          />
+        </Route>
+
+      </Switch>
+    </Router>
   );
 }
 
