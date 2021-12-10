@@ -43,8 +43,9 @@ const Playerlist = (props) => {
         for (let i=1;i<=totalPage;i++){
             pages.push(i)
         }
-        setPagination(pages)
-    }, [totalPage]);
+        let showPage = pages.slice(nowpage-1, nowpage+4)
+        setPagination(showPage)
+    }, [totalPage, nowpage]);
 
 
     useEffect(() => {
@@ -160,6 +161,14 @@ const Playerlist = (props) => {
         {/* 頁數 */}
         <nav aria-label="Page navigation example">
             <ul className="pagination">
+            <li className="page-item">
+                <a className="page-link" 
+                onClick={(e) => {
+                    if(nowpage>1){
+                        setNowpage(1)
+                    }
+                }}><i class="fas fa-angle-double-left"></i></a>
+              </li>
             {/* 前一頁 */}
               <li className="page-item">
                 <a className="page-link" 
@@ -170,26 +179,7 @@ const Playerlist = (props) => {
                 }}>Previous</a>
                 </li>
                 {/* 頁數 */}
-                {}
               {pagination.map((v,i)=>{
-                  {/* const page = 1
-                  for(let i = page-5; i<page+5; i++){
-                      console.log('上層',i)
-                      if(i>=1 && i<=totalPage){
-                        console.log(i)
-                          return (
-                              
-                            <li className="page-item">
-                                <a className="page-link" 
-                                key={i}
-                                onClick={(e) => {
-                                    setNowpage(i)
-                                }}
-                                >{i}</a>
-                            </li>
-                          )
-                      }
-                  } */}
                   return(
                     <li className="page-item">
                         <a className="page-link" 
@@ -210,6 +200,17 @@ const Playerlist = (props) => {
                     }
                 }}>Next</a>
               </li>
+              {/* 最後一頁 */}
+              <li className="page-item">
+                <a className="page-link" 
+                onClick={(e) => {
+                    if(nowpage<totalPage){
+                        setNowpage(totalPage)
+                    }
+                }}><i class="fas fa-angle-double-right"></i></a>
+              </li>
+
+              <p>第 {nowpage} / 共{totalPage}頁</p>
             </ul>
         </nav>
     </div>
