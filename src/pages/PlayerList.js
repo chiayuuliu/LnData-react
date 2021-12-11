@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import { Link, withRouter } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 const Playerlist = (props) => {
     // 球員資料
-    const { data,setPlayer } = props
+    const { data, player, setPlayer } = props
     // 呈現的資料
     const [ displayData, setDisplayData]= useState([])
-    const [ teamName, setTeamName ] = useState( 'ALL' )
+    const [ team, setTeam ] = useState( 'ALL' )
     // 關鍵字搜尋
     const [searchWord, setSearchWord] = useState('')
     // 頁數列表
@@ -17,16 +17,45 @@ const Playerlist = (props) => {
     //  篩選後的資料
     const [filterData, setFilterData] = useState([])
 
+    const [sortBy, setSortBy] = useState('games')
     
 
     
     // 取出Team 名稱
-    let TeamNameAr=[]
+    let TeamAr=[]
     for (let i = 0;i< data.length; i++){
-        if (!TeamNameAr.includes(data[i].team_acronym )){
-            TeamNameAr.push(data[i].team_acronym )
+        if (!TeamAr.includes(data[i].team_acronym )){
+            TeamAr.push(data[i].team_acronym )
         }
     }
+
+    // 取出TeamName 
+    let TeamNameAr=[]
+    for (let i = 0;i< data.length; i++){
+        if (!TeamNameAr.includes(data[i].team_name )){
+            TeamNameAr.push(data[i].team_name )
+        }
+    }
+    // 統計隊伍數量
+    const teamQtyAr =[]
+    for (let i =0; i <TeamNameAr.length; i++){
+        let obj={ name:TeamNameAr[i], qty:0}
+        teamQtyAr.push(obj)
+    }
+    for (let i = 0 ; i < data.length; i++){
+        for (let k = 0; k<teamQtyAr.length; k++){
+            if(data[i].team_name==teamQtyAr[k].name){
+                teamQtyAr[k].qty +=1
+            }
+        }
+    }
+    console.log(teamQtyAr)
+
+    // 少於15人的隊伍
+    const teamUnder = teamQtyAr.filter(function(el){
+        return el.qty <=15
+    })
+    console.log(teamUnder)
     
     useEffect(() => {
         // 只取出15筆資料
@@ -43,7 +72,7 @@ const Playerlist = (props) => {
         for (let i=1;i<=totalPage;i++){
             pages.push(i)
         }
-        let showPage = pages.slice(nowpage-1, nowpage+4)
+        let showPage = pages.slice(nowpage-1, nowpage+5)
         setPagination(showPage)
     }, [totalPage, nowpage]);
 
@@ -65,6 +94,15 @@ const Playerlist = (props) => {
 
     }, [nowpage,filterData]);
 
+    function DataSort(data) {
+        let newData = [...data]
+        if(sortBy === 'games'){
+            newData = [...newData].sort((a,b)=>b.games_played-a.games_played)
+            // console.log(newData)
+        }
+    }
+    DataSort(data)
+
     // 資料篩選
     function dataFilter(teamName,searchWord ) {
         const filterData = data.filter(function(el){
@@ -72,6 +110,11 @@ const Playerlist = (props) => {
         })
         setFilterData(filterData)
     }
+
+    // 原始資料篩選人數
+    // data.forEach(el => {
+    //     el.team_name
+    // });
 
     return (
         <div className="container">
@@ -81,12 +124,12 @@ const Playerlist = (props) => {
                 <search>
                     <label htmlhtmlFor="team">Team</label>
                     <select className="team"id="team"
-                    value={teamName}
+                    value={team}
                     onChange={(e)=>{
-                        setTeamName(e.target.value)
+                        setTeam(e.target.value)
                     }}>
                         <option value="ALL">ALL</option>
-                    {TeamNameAr.map((v,i)=>{
+                    {TeamAr.map((v,i)=>{
                         return(
                             <option value={v}>{v}</option>
                         )
@@ -107,7 +150,7 @@ const Playerlist = (props) => {
             </div>
             <button
             onClick={()=>{
-                dataFilter(teamName,searchWord)
+                dataFilter(team,searchWord)
             }}>Search</button>
         </div>
         <button className="chartbtn">Show Charts</button>
@@ -133,7 +176,7 @@ const Playerlist = (props) => {
                   {displayData.map((v,i)=>{
                       return (
                           <>
-                          <tr>
+                          <tr key={i}>
                             <th>{v.team_acronym}</th>
                             <td>{v.name}</td>
                             <td>{v.games_played}</td>
@@ -143,11 +186,7 @@ const Playerlist = (props) => {
                             <td>{v.steals_per_game}</td>
                             <td>{v.blocks_per_game}</td>
                             <td>
-                                <Link 
-                                onClick={(e)=>{
-                                    setPlayer(v.name)
-                                }}
-                                to={`/detail`}>
+                                <Link to={`/detail?id=${i}`}>
                                     <i className="fas fa-search"></i>
                                 </Link>
                             </td>
@@ -161,6 +200,7 @@ const Playerlist = (props) => {
         {/* 頁數 */}
         <nav aria-label="Page navigation example">
             <ul className="pagination">
+            {/* 第一頁 */}
             <li className="page-item">
                 <a className="page-link" 
                 onClick={(e) => {
