@@ -26,7 +26,6 @@ const Playerlist = (props) => {
     // false 讓圖表一開始消失，true的時候出現
     const [chart, setChart] = useState(true)
 
-    console.log(chart)    
     // 取出Team 名稱
     let TeamAr=[]
     for (let i = 0;i< data.length; i++){
@@ -77,7 +76,7 @@ const Playerlist = (props) => {
        // 設定圖表
        setLabel(chartLabel)
        setChartData(chartData)
-    }, [chart]);
+    }, []);
 
     // 總頁數有變化時重生成頁碼
     useEffect(() => {
@@ -116,12 +115,30 @@ const Playerlist = (props) => {
     }
     DataSort(data)
 
+    // console.log(team,searchWord)
     // 資料篩選
-    function dataFilter(teamName,searchWord ) {
-        const filterData = data.filter(function(el){
-            return el.team_acronym ===teamName && el.name.includes( searchWord)
-        })
-        setFilterData(filterData)
+    // 要注意如果searchword 空白也可以篩選
+    function dataFilter(team,searchWord) {
+        let newData=[]
+        if(team=='ALL' && !searchWord){
+            newData=[...data]
+        }
+        if(team=='ALL' && searchWord){
+            newData = data.filter(function(el){
+                return el.name.includes(searchWord)
+            }) 
+        }
+        if(team!=='ALL' && searchWord){
+            newData = data.filter(function(el){
+                return el.team_acronym ===team && el.name.includes(searchWord)
+            }) 
+        }
+        if(team!=='ALL' && !searchWord){
+            newData = data.filter(function(el){
+                return el.team_acronym ===team
+            })
+        }
+        setFilterData(newData)
     }
 
     
@@ -162,6 +179,7 @@ const Playerlist = (props) => {
             <button
             className="searchbtn"
             onClick={()=>{
+                // 只要不是ALL 都可執行篩選
                 dataFilter(team,searchWord)
             }}>Search</button>
         </div>

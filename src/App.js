@@ -1,5 +1,7 @@
 import './App.css';
+// import oridata from './data/players.json'
 import data from './data/players.json'
+
 import React, { useState, useEffect } from 'react'
 import {
   BrowserRouter as Router,
@@ -14,28 +16,21 @@ import PlayerDetail from './pages/PlayerDetail';
 function App() {
   const [ playerInfo, setPlayerInfo] = useState([])
   const [player, setPlayer] = useState('')
+  // const [ data, setData] = useState([])
 
   // useEffect(() => {
-  //   const newPlayerInfo = data.filter(function(el){
-  //       return el.name === player
-  //   })
-  //   console.log(player)
-  //   console.log(newPlayerInfo)
-  //   setPlayerInfo(newPlayerInfo)
-    
-  // }, [player]);
+  //   let newData = [...oridata]
+  //   newData = [...newData].sort((a,b)=>b.points_per_game -a.points_per_game )
+  //   setData(newData)
+  //   console.log(newData)
+  // }, []);
 
   return (
     <Router>
       <Nav></Nav>
-        {/* <Playerlist
-          data={data}
-        /> */}
       <Switch>
         <Route path="/detail">
-          <PlayerDetail
-            data={data}
-          />
+          <PlayerDetail data={data}/>
         </Route>
 
         <Route path="/">
@@ -45,7 +40,6 @@ function App() {
             setPlayer={setPlayer}
           />
         </Route>
-
       </Switch>
     </Router>
   );
