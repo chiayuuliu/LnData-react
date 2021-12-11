@@ -23,9 +23,10 @@ const Playerlist = (props) => {
     // 圖表用
     const [label, setLabel] = useState([])
     const [chartdata, setChartData] = useState([])
+    // false 讓圖表一開始消失，true的時候出現
+    const [chart, setChart] = useState(true)
 
-
-    
+    console.log(chart)    
     // 取出Team 名稱
     let TeamAr=[]
     for (let i = 0;i< data.length; i++){
@@ -62,16 +63,10 @@ const Playerlist = (props) => {
     let chartLabel=[]
     let chartData=[]
     teamUnder.forEach(el=>{
-        console.log(typeof el.qty)
         chartLabel.push(el.name)
         chartData.push(el.qty)
     })
 
-    console.log(chartLabel)
-    console.log(chartData)
-
-
-    
     useEffect(() => {
         // 只取出15筆資料
        const newData = data.slice((nowpage-1)*15,nowpage*15)
@@ -82,7 +77,7 @@ const Playerlist = (props) => {
        // 設定圖表
        setLabel(chartLabel)
        setChartData(chartData)
-    }, []);
+    }, [chart]);
 
     // 總頁數有變化時重生成頁碼
     useEffect(() => {
@@ -110,7 +105,7 @@ const Playerlist = (props) => {
             setTotalPage(newPages)
         }
 
-    }, [nowpage,filterData]);
+    }, [nowpage,filterData,chart]);
 
     // 資料排序
     function DataSort(data) {
@@ -133,12 +128,12 @@ const Playerlist = (props) => {
 
     return (
     <>
-    <div className="container">
+    <div className="container chartcontainer">
         {/* 搜尋欄位 */}
         <div className="wrap">
             <div className="searchwrap">
                 <search>
-                    <label htmlhtmlFor="team">Team</label>
+                    <label htmlhtmlFor="team">Team : </label>
                     <select className="team"id="team"
                     value={team}
                     onChange={(e)=>{
@@ -154,7 +149,7 @@ const Playerlist = (props) => {
                 </search>
             </div>
             <div className="keywordwarp">
-                <label htmlFor="keyword">Ketword : </label>
+                <label htmlFor="keyword">Keyword : </label>
                 <input type="text"
                     className='searchinput'
                     placeholder='請輸入關鍵字'
@@ -165,11 +160,17 @@ const Playerlist = (props) => {
                 />
             </div>
             <button
+            className="searchbtn"
             onClick={()=>{
                 dataFilter(team,searchWord)
             }}>Search</button>
         </div>
-        <button className="chartbtn">Show Charts</button>
+        <button className="chartbtn"
+            onClick={(e)=>{
+                setChart(false)
+               console.log('show')
+            }}
+            >Show Charts</button>
 
         {/* 資料欄位 */}
         <div className="datawrap">
@@ -269,14 +270,21 @@ const Playerlist = (props) => {
               <p>第 {nowpage} / 共{totalPage}頁</p>
             </ul>
         </nav>
-    </div>
-    <div class="container chartcontainer">
-        <div class="row chartrow">
-            <div class="chartwrap">
-                <button class="close">close</button>
+        <div class="chartwrap"
+            style={{
+                display: chart ? 'none' : 'block'
+            }}>
+            <div class="chart">
+                <button class="close"
+                    onClick={(e)=>{
+                        setChart(true)
+                        console.log('close')
+                    }}    
+                >close</button>
                 <Barchart
                     label={label}
                     chartdata={chartdata}
+                    
                 />
             </div>
         </div>

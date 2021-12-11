@@ -23,12 +23,11 @@ import {
 
 const Barchart = (props) => {
     const { label, chartdata } = props
-    console.log(typeof label[0])
     return (
-        <div>
+        <>
             <Bar
             data={{
-                labels:label,
+                labels:[...label],
                 datasets:[
                     {
                     label:' 少於15人球隊',
@@ -59,7 +58,7 @@ const Barchart = (props) => {
                width={600}
 
             />
-        </div>
+        </>
     );
 };
 
