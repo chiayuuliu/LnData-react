@@ -1,22 +1,22 @@
 import React, { useState,useEffect } from 'react';
+import { Link, withRouter } from 'react-router-dom'
+
 
 const Playerdetail = (props) => {
+    const { data } = props
+    const [ detailInfo, setDetailInfo] = useState([])
 
-    const { playerInfo } = props
-    // const [ playerInfo, setPlayerInfo] = useState([])
+    const searchParams = new URLSearchParams(
+        props.location.search
+      )
+    // 從網址列上取得順序
+    const playerID = searchParams.get('id')
+    console.log(playerID)
 
-    // useEffect(() => {
-    //     const newPlayerInfo = data.filter(function(el){
-    //         return el.name === player
-    //     })
-    //     setPlayerInfo(newPlayerInfo)
-    //     console.log(newPlayerInfo)
-    // // const P=[...playerInfo]
-
-    // }, []);
-    const P=[...playerInfo]
-    console.log(P[0].name)
-    console.log(playerInfo)
+    useEffect(() => {
+        const newData = data[playerID]
+        setDetailInfo(newData)
+    }, []);
     
     return (
         <>   
@@ -28,30 +28,30 @@ const Playerdetail = (props) => {
                             <i className="fas fa-user"></i>
                         </div>
                         <h2 className="playername">
-                        {P[0].name}
+                        {detailInfo.name}
                         </h2>
                     </div>
                     <div className="infoDetail">
-                        <li>Team : {P[0].team_acronym}</li>
-                        <li>TeamName : {P[0].team_name}</li>
-                        <li>Games : {P[0].games_played}</li>
-                        <li>MPG : {P[0].minutes_per_game}</li>
-                        <li>FGA : {P[0].field_goals_attempted_per_game}</li>
-                        <li>FGM : {P[0].field_goals_made_per_game}</li>
-                        <li>FG% : {P[0].field_goal_percentage}</li>
-                        <li>FT% : {P[0].free_throw_percentage}</li>
-                        <li>3PA : {P[0].three_point_attempted_per_game}</li>
-                        <li>3PM : {P[0].three_point_made_per_game}</li>
-                        <li>3PT% : {P[0].three_point_percentage}</li>
-                        <li>Points : {P[0].points_per_game}</li>
-                        <li>ORebounds : {P[0].offensive_rebounds_per_game}</li>
-                        <li>DRebounds : {P[0].defensive_rebounds_per_game}</li>
-                        <li>Rebounds : {P[0].rebounds_per_game}</li>
-                        <li>Assists : {P[0].assists_per_game}</li>
-                        <li>Steals : {P[0].steals_per_game}</li>
-                        <li>Blocks : {P[0].blocks_per_game}</li>
-                        <li>Turnovers : {P[0].turnovers_per_game}</li>
-                        <li>Efficiency : {P[0].player_efficiency_rating}</li>
+                        <li>Team : {detailInfo.team_acronym}</li>
+                        <li>TeamName : {detailInfo.team_name}</li>
+                        <li>Games : {detailInfo.games_played}</li>
+                        <li>MPG : {detailInfo.minutes_per_game}</li>
+                        <li>FGA : {detailInfo.field_goals_attempted_per_game}</li>
+                        <li>FGM : {detailInfo.field_goals_made_per_game}</li>
+                        <li>FG% : {detailInfo.field_goal_percentage}</li>
+                        <li>FT% : {detailInfo.free_throw_percentage}</li>
+                        <li>3PA : {detailInfo.three_point_attempted_per_game}</li>
+                        <li>3PM : {detailInfo.three_point_made_per_game}</li>
+                        <li>3PT% : {detailInfo.three_point_percentage}</li>
+                        <li>Points : {detailInfo.points_per_game}</li>
+                        <li>ORebounds : {detailInfo.offensive_rebounds_per_game}</li>
+                        <li>DRebounds : {detailInfo.defensive_rebounds_per_game}</li>
+                        <li>Rebounds : {detailInfo.rebounds_per_game}</li>
+                        <li>Assists : {detailInfo.assists_per_game}</li>
+                        <li>Steals : {detailInfo.steals_per_game}</li>
+                        <li>Blocks : {detailInfo.blocks_per_game}</li>
+                        <li>Turnovers : {detailInfo.turnovers_per_game}</li>
+                        <li>Efficiency : {detailInfo.player_efficiency_rating}</li>
                     </div>
                 </div>
             </div>
@@ -60,4 +60,4 @@ const Playerdetail = (props) => {
     );
 }
 
-export default Playerdetail;
+export default withRouter(Playerdetail);

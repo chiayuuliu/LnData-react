@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import Barchart from '../components/BarChart';
 
 const Playerlist = (props) => {
     // 球員資料
@@ -19,6 +20,10 @@ const Playerlist = (props) => {
 
     const [sortBy, setSortBy] = useState('games')
     
+    // 圖表用
+    const [label, setLabel] = useState([])
+    const [chartdata, setChartData] = useState([])
+
 
     
     // 取出Team 名稱
@@ -28,7 +33,6 @@ const Playerlist = (props) => {
             TeamAr.push(data[i].team_acronym )
         }
     }
-
     // 取出TeamName 
     let TeamNameAr=[]
     for (let i = 0;i< data.length; i++){
@@ -49,13 +53,24 @@ const Playerlist = (props) => {
             }
         }
     }
-    console.log(teamQtyAr)
-
     // 少於15人的隊伍
     const teamUnder = teamQtyAr.filter(function(el){
         return el.qty <=15
     })
-    console.log(teamUnder)
+
+    // 圖表的隊伍標籤/人數
+    let chartLabel=[]
+    let chartData=[]
+    teamUnder.forEach(el=>{
+        console.log(typeof el.qty)
+        chartLabel.push(el.name)
+        chartData.push(el.qty)
+    })
+
+    console.log(chartLabel)
+    console.log(chartData)
+
+
     
     useEffect(() => {
         // 只取出15筆資料
@@ -64,6 +79,9 @@ const Playerlist = (props) => {
        const newTotalPages = Math.ceil(data.length/15)
        setTotalPage(newTotalPages)
 
+       // 設定圖表
+       setLabel(chartLabel)
+       setChartData(chartData)
     }, []);
 
     // 總頁數有變化時重生成頁碼
@@ -94,11 +112,11 @@ const Playerlist = (props) => {
 
     }, [nowpage,filterData]);
 
+    // 資料排序
     function DataSort(data) {
         let newData = [...data]
         if(sortBy === 'games'){
             newData = [...newData].sort((a,b)=>b.games_played-a.games_played)
-            // console.log(newData)
         }
     }
     DataSort(data)
@@ -111,13 +129,11 @@ const Playerlist = (props) => {
         setFilterData(filterData)
     }
 
-    // 原始資料篩選人數
-    // data.forEach(el => {
-    //     el.team_name
-    // });
+    
 
     return (
-        <div className="container">
+    <>
+    <div className="container">
         {/* 搜尋欄位 */}
         <div className="wrap">
             <div className="searchwrap">
@@ -254,6 +270,18 @@ const Playerlist = (props) => {
             </ul>
         </nav>
     </div>
+    <div class="container chartcontainer">
+        <div class="row chartrow">
+            <div class="chartwrap">
+                <button class="close">close</button>
+                <Barchart
+                    label={label}
+                    chartdata={chartdata}
+                />
+            </div>
+        </div>
+    </div>
+    </>
     );
 };
 

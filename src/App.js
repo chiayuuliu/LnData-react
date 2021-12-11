@@ -15,13 +15,15 @@ function App() {
   const [ playerInfo, setPlayerInfo] = useState([])
   const [player, setPlayer] = useState('')
 
-  useEffect(() => {
-    const newPlayerInfo = data.filter(function(el){
-        return el.name === player
-    })
-    setPlayerInfo(newPlayerInfo)
+  // useEffect(() => {
+  //   const newPlayerInfo = data.filter(function(el){
+  //       return el.name === player
+  //   })
+  //   console.log(player)
+  //   console.log(newPlayerInfo)
+  //   setPlayerInfo(newPlayerInfo)
     
-  }, [player]);
+  // }, [player]);
 
   return (
     <Router>
@@ -32,13 +34,14 @@ function App() {
       <Switch>
         <Route path="/detail">
           <PlayerDetail
-          playerInfo={playerInfo}
+            data={data}
           />
         </Route>
 
         <Route path="/">
           <Playerlist 
             data={data}
+            player={player}
             setPlayer={setPlayer}
           />
         </Route>
