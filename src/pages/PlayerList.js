@@ -4,7 +4,7 @@ import Barchart from '../components/BarChart';
 
 const Playerlist = (props) => {
     // 球員資料
-    const { data, player, setPlayer } = props
+    const { data } = props
     // 呈現的資料
     const [ displayData, setDisplayData]= useState([])
     const [ team, setTeam ] = useState( 'ALL' )
@@ -121,7 +121,7 @@ const Playerlist = (props) => {
 
     // console.log(team,searchWord)
     // 資料篩選
-    // 要注意如果searchword 空白也可以篩選
+    // 如果searchword 空白也可以篩選
     function dataFilter(team,searchWord) {
         let newData=[]
         if(team=='ALL' && !searchWord){
@@ -142,7 +142,12 @@ const Playerlist = (props) => {
                 return el.team_acronym ===team
             })
         }
-        setFilterData(newData)
+        // 有資料再設定回狀態
+        if(newData.length){
+            setFilterData(newData)
+        }else{
+            alert('無符合條件資料')
+        }
     }
 
     return (
@@ -278,7 +283,7 @@ const Playerlist = (props) => {
               </li>
               {/* 最後一頁 */}
               <li className="page-item">
-                <a className="page-link" 
+                <a className="page-link"  
                 onClick={(e) => {
                     if(nowpage<totalPage){
                         setNowpage(totalPage)
@@ -286,7 +291,7 @@ const Playerlist = (props) => {
                 }}><i class="fas fa-angle-double-right"></i></a>
               </li>
 
-              <p>第 {nowpage} / 共{totalPage}頁</p>
+              <div className="page">第 {nowpage} 頁 / 共{totalPage}頁</div>
             </ul>
         </nav>
         <div class="chartwrap"

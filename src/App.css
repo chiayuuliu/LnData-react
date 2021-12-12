@@ -180,3 +180,23 @@ canvas{
   justify-content: center;
 }
 
+/* 頁碼 */
+.pagination{
+  justify-content: center;
+  align-items: center;
+  color: #4f81c8;
+  cursor: pointer;
+}
+.page{
+  margin-left: 20px;
+  color: #000000;
+}
+
+.active{
+  background-color: #4f81c8;
+  color: white;
+}
+
+.playername{
+  color: rgba(44, 184, 177);
+}
