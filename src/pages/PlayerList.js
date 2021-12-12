@@ -17,14 +17,30 @@ const Playerlist = (props) => {
     const [ totalPage, setTotalPage] = useState(0)
     //  篩選後的資料
     const [filterData, setFilterData] = useState([])
-
-    const [sortBy, setSortBy] = useState('games')
+    const [dataID, setDataID] = useState(data)
+    const [reset, setReSet] = useState(0)
     
     // 圖表用
     const [label, setLabel] = useState([])
     const [chartdata, setChartData] = useState([])
     // false 讓圖表一開始消失，true的時候出現
     const [chart, setChart] = useState(false)
+
+    // 資料排序
+    function handelData(data) {
+        // 先照point 順序排列
+        let newData = []
+        newData = data.sort((a,b)=>b.points_per_game-a.points_per_game)
+        // console.log('處理完後資料',newData)
+        // 再給ID值
+        let dataID = [...newData]
+        for(let i =0;i<newData.length; i++){
+            dataID[i].ID= i
+        }
+        console.log('加了ID',dataID)
+        setDataID(dataID)
+    }
+    // handelData(data)
 
     // 取出Team 名稱
     let TeamAr=[]
@@ -68,16 +84,18 @@ const Playerlist = (props) => {
 
     useEffect(() => {
         // 只取出15筆資料
-       const newData = data.slice((nowpage-1)*15,nowpage*15)
+       const newData = dataID.slice((nowpage-1)*15,nowpage*15)
        setDisplayData(newData) 
-       const newTotalPages = Math.ceil(data.length/15)
+    //    console.log(displayData)
+       // 設定頁碼
+       const newTotalPages = Math.ceil(dataID.length/15)
        setTotalPage(newTotalPages)
 
        // 設定圖表
        setLabel(chartLabel)
        setChartData(chartData)
-       console.log(label)
        setChart(true)
+       handelData(data)
     }, []);
 
     // 總頁數有變化時重生成頁碼
@@ -107,38 +125,31 @@ const Playerlist = (props) => {
             let newPages = Math.ceil(data.length/15)
             setTotalPage(newPages)
         }
+        setLabel(chartLabel)
+        setChartData(chartData)
+        setChart(true)
 
     }, [nowpage,filterData]);
 
-    // 資料排序
-    function DataSort(data) {
-        let newData = [...data]
-        if(sortBy === 'games'){
-            newData = [...newData].sort((a,b)=>b.games_played-a.games_played)
-        }
-    }
-    DataSort(data)
-
-    // console.log(team,searchWord)
     // 資料篩選
     // 如果searchword 空白也可以篩選
     function dataFilter(team,searchWord) {
         let newData=[]
         if(team=='ALL' && !searchWord){
-            newData=[...data]
+            newData=[...dataID]
         }
         if(team=='ALL' && searchWord){
-            newData = data.filter(function(el){
+            newData = dataID.filter(function(el){
                 return el.name.includes(searchWord)
             }) 
         }
         if(team!=='ALL' && searchWord){
-            newData = data.filter(function(el){
+            newData = dataID.filter(function(el){
                 return el.team_acronym ===team && el.name.includes(searchWord)
             }) 
         }
         if(team!=='ALL' && !searchWord){
-            newData = data.filter(function(el){
+            newData = dataID.filter(function(el){
                 return el.team_acronym ===team
             })
         }
@@ -227,7 +238,7 @@ const Playerlist = (props) => {
                             <td>{v.steals_per_game}</td>
                             <td>{v.blocks_per_game}</td>
                             <td>
-                                <Link to={`/detail?id=${i}`}>
+                                <Link to={`/detail?id=${v.ID}`}>
                                     <i className="fas fa-search"></i>
                                 </Link>
                             </td>

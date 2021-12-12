@@ -14,17 +14,6 @@ import Playerlist from './pages/PlayerList';
 import PlayerDetail from './pages/PlayerDetail';
 
 function App() {
-  const [ playerInfo, setPlayerInfo] = useState([])
-  const [player, setPlayer] = useState('')
-  // const [ data, setData] = useState([])
-
-  // useEffect(() => {
-  //   let newData = [...oridata]
-  //   newData = [...newData].sort((a,b)=>b.points_per_game -a.points_per_game )
-  //   setData(newData)
-  //   console.log(newData)
-  // }, []);
-
   return (
     <Router>
       <Nav></Nav>
@@ -36,8 +25,6 @@ function App() {
         <Route path="/">
           <Playerlist 
             data={data}
-            player={player}
-            setPlayer={setPlayer}
           />
         </Route>
       </Switch>

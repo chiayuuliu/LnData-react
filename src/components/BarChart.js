@@ -30,7 +30,7 @@ const Barchart = (props) => {
                 labels:[...label],
                 datasets:[
                     {
-                    label:' 少於15人球隊',
+                    label:' 隊伍人數',
                     data:chartdata,
                     backgroundColor:[
                         'rgba(255, 99, 132, 0.2)',

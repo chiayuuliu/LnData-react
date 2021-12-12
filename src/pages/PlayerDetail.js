@@ -9,9 +9,8 @@ const Playerdetail = (props) => {
     const searchParams = new URLSearchParams(
         props.location.search
       )
-    // 從網址列上取得順序
+    // 從網址列上取得id
     const playerID = searchParams.get('id')
-    console.log(playerID)
 
     useEffect(() => {
         const newData = data[playerID]
