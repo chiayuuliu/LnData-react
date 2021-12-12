@@ -105,8 +105,12 @@ const Playerlist = (props) => {
             pages.push(i)
         }
         // 顯示的頁數
-        let showPage = pages.slice(nowpage-1, nowpage+5)
-        setPagination(showPage)
+        if(pages.length>4){
+            let showPage = pages.slice(nowpage-1, nowpage+5)
+            setPagination(showPage)
+        }else{
+            setPagination(pages)
+        }
     }, [totalPage, nowpage]);
 
 
