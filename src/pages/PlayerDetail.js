@@ -20,7 +20,7 @@ const Playerdetail = (props) => {
     
     return (
         <>   
-        <div className="container">
+        <div className="container detailwrap">
             <div className="row">
                 <div className="playerInfo">
                     <div className="player">

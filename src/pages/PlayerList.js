@@ -24,7 +24,7 @@ const Playerlist = (props) => {
     const [label, setLabel] = useState([])
     const [chartdata, setChartData] = useState([])
     // false 讓圖表一開始消失，true的時候出現
-    const [chart, setChart] = useState(true)
+    const [chart, setChart] = useState(false)
 
     // 取出Team 名稱
     let TeamAr=[]
@@ -76,6 +76,8 @@ const Playerlist = (props) => {
        // 設定圖表
        setLabel(chartLabel)
        setChartData(chartData)
+       console.log(label)
+       setChart(true)
     }, []);
 
     // 總頁數有變化時重生成頁碼
@@ -84,11 +86,13 @@ const Playerlist = (props) => {
         for (let i=1;i<=totalPage;i++){
             pages.push(i)
         }
+        // 顯示的頁數
         let showPage = pages.slice(nowpage-1, nowpage+5)
         setPagination(showPage)
     }, [totalPage, nowpage]);
 
 
+    // 頁數跟篩選資料改變，重新顯示取資料
     useEffect(() => {
         // 設定資料、頁數
         if(filterData.length){
@@ -104,7 +108,7 @@ const Playerlist = (props) => {
             setTotalPage(newPages)
         }
 
-    }, [nowpage,filterData,chart]);
+    }, [nowpage,filterData]);
 
     // 資料排序
     function DataSort(data) {
@@ -140,8 +144,6 @@ const Playerlist = (props) => {
         }
         setFilterData(newData)
     }
-
-    
 
     return (
     <>
@@ -179,7 +181,6 @@ const Playerlist = (props) => {
             <button
             className="searchbtn"
             onClick={()=>{
-                // 只要不是ALL 都可執行篩選
                 dataFilter(team,searchWord)
             }}>Search</button>
         </div>
@@ -298,7 +299,7 @@ const Playerlist = (props) => {
                         setChart(true)
                         console.log('close')
                     }}    
-                >close</button>
+                >Close</button>
                 <Barchart
                     label={label}
                     chartdata={chartdata}
