@@ -18,9 +18,7 @@ const Playerlist = (props) => {
     //  篩選後的資料
     const [filterData, setFilterData] = useState([])
     const [dataID, setDataID] = useState(data)
-    const [reset, setReSet] = useState(0)
-    
-    // 圖表用
+    // 圖表用array
     const [label, setLabel] = useState([])
     const [chartdata, setChartData] = useState([])
     // false 讓圖表一開始消失，true的時候出現
@@ -28,19 +26,16 @@ const Playerlist = (props) => {
 
     // 資料排序
     function handelData(data) {
-        // 先照point 順序排列
+        // 照point 順序排列
         let newData = []
         newData = data.sort((a,b)=>b.points_per_game-a.points_per_game)
-        // console.log('處理完後資料',newData)
-        // 再給ID值
+        // 給ID值
         let dataID = [...newData]
         for(let i =0;i<newData.length; i++){
             dataID[i].ID= i
         }
-        console.log('加了ID',dataID)
         setDataID(dataID)
     }
-    // handelData(data)
 
     // 取出Team 名稱
     let TeamAr=[]
@@ -62,6 +57,7 @@ const Playerlist = (props) => {
         let obj={ name:TeamNameAr[i], qty:0}
         teamQtyAr.push(obj)
     }
+    // 有配對到的qty 值+1 
     for (let i = 0 ; i < data.length; i++){
         for (let k = 0; k<teamQtyAr.length; k++){
             if(data[i].team_name==teamQtyAr[k].name){
@@ -69,7 +65,7 @@ const Playerlist = (props) => {
             }
         }
     }
-    // 少於15人的隊伍
+    // 篩選少於15人的隊伍
     const teamUnder = teamQtyAr.filter(function(el){
         return el.qty <=15
     })
@@ -86,12 +82,10 @@ const Playerlist = (props) => {
         // 只取出15筆資料
        const newData = dataID.slice((nowpage-1)*15,nowpage*15)
        setDisplayData(newData) 
-    //    console.log(displayData)
        // 設定頁碼
        const newTotalPages = Math.ceil(dataID.length/15)
        setTotalPage(newTotalPages)
-
-       // 設定圖表
+       // 設定圖表資料
        setLabel(chartLabel)
        setChartData(chartData)
        setChart(true)
@@ -104,7 +98,7 @@ const Playerlist = (props) => {
         for (let i=1;i<=totalPage;i++){
             pages.push(i)
         }
-        // 顯示的頁數
+        // 總頁數大於4座頁碼數量控制
         if(pages.length>4){
             let showPage = pages.slice(nowpage-1, nowpage+5)
             setPagination(showPage)
@@ -114,7 +108,7 @@ const Playerlist = (props) => {
     }, [totalPage, nowpage]);
 
 
-    // 頁數跟篩選資料改變，重新顯示取資料
+    // 頁數跟篩選資料改變，重新取得顯示資料
     useEffect(() => {
         // 設定資料、頁數
         if(filterData.length){
@@ -207,7 +201,6 @@ const Playerlist = (props) => {
         <button className="chartbtn"
             onClick={(e)=>{
                 setChart(false)
-               console.log('show')
             }}
             >Show Charts</button>
 
@@ -233,7 +226,7 @@ const Playerlist = (props) => {
                       return (
                           <>
                           <tr key={i}>
-                            <th>{v.team_acronym}</th>
+                            <td>{v.team_acronym}</td>
                             <td>{v.name}</td>
                             <td>{v.games_played}</td>
                             <td>{v.points_per_game}</td>
@@ -317,7 +310,6 @@ const Playerlist = (props) => {
                 <button class="close"
                     onClick={(e)=>{
                         setChart(true)
-                        console.log('close')
                     }}    
                 >Close</button>
                 <Barchart

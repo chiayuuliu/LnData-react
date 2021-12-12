@@ -1,13 +1,11 @@
 import './App.css';
 // import oridata from './data/players.json'
 import data from './data/players.json'
-
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import {
   BrowserRouter as Router,
   Route,
   Switch,
-  useHistory,
 } from 'react-router-dom'
 import Nav from './components/Nav';
 import Playerlist from './pages/PlayerList';

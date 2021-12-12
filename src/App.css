@@ -38,7 +38,6 @@
   left: 0;
   width: 100%;
   height: 60px;
-  /* background-color: rgb(255, 160, 122); */
   background-color: #4f81c8;
 
   z-index: 2;
@@ -52,7 +51,6 @@
 .wrap{
   height: 100px;
   background-color: rgba(44, 184, 177, 0.25);
-  /* border-radius: 15px; */
   margin: 50px auto;
   padding: 30px;
   display: flex;
@@ -60,11 +58,9 @@
   align-items: center;
 }
 .datawrap{
-  /* border: 3px solid  rgba(44, 184, 177, 0.469); */
-  /* border-top: 3px solid  rgba(44, 184, 177, 0.469); */
   border-radius: 0px;
-  margin: 50px auto;
-  padding: 30px 10px;
+  margin: 30px auto;
+  padding: 30px 0px;
 }
 /* 搜尋欄位 */
 
@@ -72,28 +68,27 @@
 .searchbtn,
 .close{
   padding: 5px 20px;
-  /* border-radius: 100px; */
   border: none;
   background-color: white;
   cursor: pointer;
-  transition: .5s;
+  transition: .3s;
 }
 .searchbtn:hover,
-.close:hover,
-.chartbtn:hover{
-  box-shadow: 3px 3px 5px lightgrey;
-}
-.chartbtn{
-  /* background-color: rgb(255, 160, 122); */
+.close:hover{
   background-color: #4f81c8;
   color: white;
-  font-weight: bold;
+}
+.chartbtn:hover{
+  background-color: #2cb8b078;
+  color: black;
+}
+.chartbtn{
+  background-color: #4f81c8;
+  color: white;
   font-size: 18px;
 }
 .close{
-  background-color: rgb(44, 184, 176, 0.469);
-  /* color: white; */
-  /* font-weight: bold; */
+  background-color: #2cb8b078;
 }
 
 .searchwrap label,
@@ -145,19 +140,15 @@
 /* 圖表 */
 
 .chartrow{
-  /* position: relative; */
   display: flex;
   justify-content: center;
   background-color: aquamarine;
-  /* align-items: center; */
 }
 #myChart {
   width: 200px;
   height: 200px;
-  /* z-index: 999; */
 }
 .chart{
-  /* border: 2px solid lightblue; */
   box-shadow: 4px 4px 10px lightgray;
   background-color: rgb(255, 255, 255);
   padding: 20px;
@@ -165,7 +156,6 @@
   top: 25%;
 }
 .chartcontainer{
-  /* background-color: rgba(0, 0, 0, 0.2); */
   margin-top: 150px;
   width: 100vw;
   height: 100vh;
@@ -199,4 +189,8 @@ canvas{
 
 .playername{
   color: rgba(44, 184, 177);
+}
+
+th{
+  color: #1d6763;
 }
