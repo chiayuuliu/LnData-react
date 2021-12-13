@@ -264,32 +264,34 @@ const Playerlist = (props) => {
                     onClick={(e)=>{
                         console.log('games')
                          setSortBy('games')
-                     }}>Games</th>
+                     }}>Games
+                     <i class="fas fa-sort"></i></th>
                     <th scope="col"
                     className='sort'
                      onClick={(e)=>{
                          setSortBy('points')
-                     }}>Points</th>
+                     }}>Points
+                     <i class="fas fa-sort"></i></th>
                     <th scope="col"
                     className='sort'
                     onClick={(e)=>{
                          setSortBy('rebounds')
-                     }}>Rebounds</th>
+                     }}>Rebounds<i class="fas fa-sort"></i></th>
                     <th scope="col"
                     className='sort'
                     onClick={(e)=>{
                          setSortBy('assists')
-                     }}>Assists</th>
+                     }}>Assists<i class="fas fa-sort"></i></th>
                     <th scope="col"
                     className='sort'
                     onClick={(e)=>{
                          setSortBy('steals')
-                     }}>Steals</th>
+                     }}>Steals<i class="fas fa-sort"></i></th>
                     <th scope="col"
                     className='sort'
                     onClick={(e)=>{
                          setSortBy('blocks')
-                     }}>Blocks</th>
+                     }}>Blocks<i class="fas fa-sort"></i></th>
                     <th scope="col">Detail</th>
                   </tr>
                 </thead>
