@@ -5,16 +5,41 @@ import { withRouter } from 'react-router-dom'
 const Playerdetail = (props) => {
     const { data } = props
     const [ detailInfo, setDetailInfo] = useState([])
+    const [dataID, setDataID] = useState(data)
+
 
     const searchParams = new URLSearchParams(
         props.location.search
       )
     // 從網址列上取得id
-    const playerID = searchParams.get('id')
+    const playerID = parseInt(searchParams.get('id'))
+    // console.log('detail',data)
+
+    function handelData(data) {
+        // 照point 順序排列
+        let newData = []
+        newData = data.sort((a,b)=>b.points_per_game-a.points_per_game)
+        // 給ID值
+        let dataID = [...newData]
+        for(let i =0;i<newData.length; i++){
+            dataID[i].ID= i
+        }
+        setDataID(dataID)
+    }
 
     useEffect(() => {
-        const newData = data[playerID]
-        setDetailInfo(newData)
+        handelData(data)
+        let newData=[]
+        console.log('dataID',dataID[0])
+        console.log(dataID[0].ID)
+        console.log(dataID[0].ID==playerID)
+        dataID.forEach(el => {
+            if(el.ID==playerID){
+                newData.push(el)
+            }
+        });
+        console.log(newData)
+        setDetailInfo(newData[0])
     }, []);
     
     return (
