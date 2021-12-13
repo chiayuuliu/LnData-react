@@ -23,6 +23,7 @@ const Playerlist = (props) => {
     const [chartdata, setChartData] = useState([])
     // false 讓圖表一開始消失，true的時候出現
     const [chart, setChart] = useState(false)
+    const [sortBy, setSortBy ] = useState('points')
 
     // 資料排序
     function handelData(data) {
@@ -35,6 +36,42 @@ const Playerlist = (props) => {
             dataID[i].ID= i
         }
         setDataID(dataID)
+    }
+    function handelSort(dataID) {
+        let newData=[]
+        if(sortBy=='points'){
+            setDataID(dataID)
+        }
+        if(sortBy=='games'){
+            newData = dataID.sort((a,b)=>
+                b.games_played-a.games_played
+            )
+            setDataID(newData)
+        }
+        if(sortBy==='rebounds'){
+            newData = dataID.sort((a,b)=>
+                b.rebounds_per_game-a.rebounds_per_game
+            )
+            setDataID(newData)
+        }
+        if(sortBy==='assists'){
+            newData = dataID.sort((a,b)=>
+                b.assists_per_game-a.assists_per_game
+            )
+            setDataID(newData)
+        }
+        if(sortBy==='steals'){
+            newData = dataID.sort((a,b)=>
+                b.steals_per_game-a.steals_per_game
+            )
+            setDataID(newData)
+        }
+        if(sortBy==='blocks'){
+            newData = dataID.sort((a,b)=>
+                b.blocks_per_game-a.blocks_per_game
+            )
+            setDataID(newData)
+        }
     }
 
     // 取出Team 名稱
@@ -79,7 +116,10 @@ const Playerlist = (props) => {
     })
 
     useEffect(() => {
-        // 只取出15筆資料
+        //處理資料(排序+給ID)
+        handelData(data)
+        handelSort(dataID)
+        // 只取出15筆資料，設定顯示資料
        const newData = dataID.slice((nowpage-1)*15,nowpage*15)
        setDisplayData(newData) 
        // 設定頁碼
@@ -89,8 +129,8 @@ const Playerlist = (props) => {
        setLabel(chartLabel)
        setChartData(chartData)
        setChart(true)
-       handelData(data)
-    }, []);
+       
+    }, [sortBy]);
 
     // 總頁數有變化時重生成頁碼
     useEffect(() => {
@@ -125,9 +165,10 @@ const Playerlist = (props) => {
         }
         setLabel(chartLabel)
         setChartData(chartData)
-        setChart(true)
+        
 
     }, [nowpage,filterData]);
+
 
     // 資料篩選
     // 如果searchword 空白也可以篩選
@@ -159,6 +200,12 @@ const Playerlist = (props) => {
         }
     }
 
+    // 處理資料排序
+    // useEffect(() => {
+    //     handelSort(dataID) 
+    // }, [sortBy]);
+
+
     return (
     <>
     <div className="container chartcontainer">
@@ -166,7 +213,7 @@ const Playerlist = (props) => {
         <div className="wrap">
             <div className="searchwrap">
                 <search>
-                    <label htmlhtmlFor="team">Team : </label>
+                    <label htmlFor="team">Team : </label>
                     <select className="team"id="team"
                     value={team}
                     onChange={(e)=>{
@@ -175,7 +222,8 @@ const Playerlist = (props) => {
                         <option value="ALL">ALL</option>
                     {TeamAr.map((v,i)=>{
                         return(
-                            <option value={v}>{v}</option>
+                            <option value={v}
+                            key={i}>{v}</option>
                         )
                     })}
                     </select>
@@ -211,12 +259,37 @@ const Playerlist = (props) => {
                   <tr>
                     <th scope="col">Team</th>
                     <th scope="col">Name</th>
-                    <th scope="col">Games</th>
-                    <th scope="col">Points</th>
-                    <th scope="col">Rebounds</th>
-                    <th scope="col">Assists</th>
-                    <th scope="col">Steals</th>
-                    <th scope="col">Blocks</th>
+                    <th scope="col"
+                    className='sort'
+                    onClick={(e)=>{
+                        console.log('games')
+                         setSortBy('games')
+                     }}>Games</th>
+                    <th scope="col"
+                    className='sort'
+                     onClick={(e)=>{
+                         setSortBy('points')
+                     }}>Points</th>
+                    <th scope="col"
+                    className='sort'
+                    onClick={(e)=>{
+                         setSortBy('rebounds')
+                     }}>Rebounds</th>
+                    <th scope="col"
+                    className='sort'
+                    onClick={(e)=>{
+                         setSortBy('assists')
+                     }}>Assists</th>
+                    <th scope="col"
+                    className='sort'
+                    onClick={(e)=>{
+                         setSortBy('steals')
+                     }}>Steals</th>
+                    <th scope="col"
+                    className='sort'
+                    onClick={(e)=>{
+                         setSortBy('blocks')
+                     }}>Blocks</th>
                     <th scope="col">Detail</th>
                   </tr>
                 </thead>
@@ -256,7 +329,7 @@ const Playerlist = (props) => {
                     if(nowpage>1){
                         setNowpage(1)
                     }
-                }}><i class="fas fa-angle-double-left"></i></a>
+                }}><i className="fas fa-angle-double-left"></i></a>
               </li>
             {/* 前一頁 */}
               <li className="page-item">
@@ -296,18 +369,18 @@ const Playerlist = (props) => {
                     if(nowpage<totalPage){
                         setNowpage(totalPage)
                     }
-                }}><i class="fas fa-angle-double-right"></i></a>
+                }}><i className="fas fa-angle-double-right"></i></a>
               </li>
 
               <div className="page">第 {nowpage} 頁 / 共{totalPage}頁</div>
             </ul>
         </nav>
-        <div class="chartwrap"
+        <div className="chartwrap"
             style={{
                 display: chart ? 'none' : 'block'
             }}>
-            <div class="chart">
-                <button class="close"
+            <div className="chart">
+                <button className="close"
                     onClick={(e)=>{
                         setChart(true)
                     }}    

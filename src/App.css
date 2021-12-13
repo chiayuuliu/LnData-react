@@ -194,3 +194,7 @@ canvas{
 th{
   color: #1d6763;
 }
+.sort{
+  color: #4f81c8;
+  cursor: pointer;
+}
