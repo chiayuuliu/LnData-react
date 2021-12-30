@@ -310,7 +310,7 @@ const Playerlist = (props) => {
                             <td>{v.steals_per_game}</td>
                             <td>{v.blocks_per_game}</td>
                             <td>
-                                <Link to={`/detail?id=${v.ID}`}>
+                                <Link to={`/detail?name=${v.name}`}>
                                     <i className="fas fa-search"></i>
                                 </Link>
                             </td>
